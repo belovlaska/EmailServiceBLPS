@@ -1,12 +1,21 @@
 spring:
   mail:
-    host: smtp.example.com
-    port: 587
-    username: your_email@example.com
-    password: your_password
+    host: localhost
+    port: 1025
+    username:
+    password:
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
   jms:
     template:
       default-destination: email-notification
+
+email:
+  from: no-reply@example.com
+  subject: Уведомление о новом контракте
+
+rabbit:
+  username: guest
+  password: guest
+  email-notification-queue: email-notification

@@ -3,6 +3,7 @@ package com.example.emailnotification.config;
 
 import com.example.emailnotification.config.properties.RabbitProperties;
 import jakarta.jms.ConnectionFactory;
+import jakarta.jms.Session;
 import lombok.RequiredArgsConstructor;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +23,9 @@ public class AmqpConfig {
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setTransactionManager(new JmsTransactionManager(connectionFactory));
-        factory.setSessionTransacted(true);
+//        factory.setTransactionManager(new JmsTransactionManager(connectionFactory));
+        factory.setSessionTransacted(false);
+        factory.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE);
         factory.setConcurrency("1-1");
         return factory;
     }
@@ -35,7 +37,7 @@ public class AmqpConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        String brokerUrl = "amqp://rabbitmq:5672";
+        String brokerUrl = "amqp://localhost:5672";
         JmsConnectionFactory qpidFactory = new JmsConnectionFactory(
                 rabbitProperties.getUsername(),
                 rabbitProperties.getPassword(),
